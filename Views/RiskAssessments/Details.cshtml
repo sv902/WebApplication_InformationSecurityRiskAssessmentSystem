@@ -1,0 +1,51 @@
+﻿@using WebApplication_InformationSecurityRiskAssessmentSystem.ViewModels
+@model RiskAssessmentViewModel
+
+@{
+    ViewData["Title"] = "Деталі оцінювання ризику";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    <div>
+        <br />
+        @if (Model.Assets != null && Model.Assets.Any() && Model.Threats != null && Model.Threats.Any())
+        {
+            <h4>Оцінка ризику для активу "@Model.Assets.First().Name" від загрози "@Model.Threats.First().Name"</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Assets!.First().Name)
+                </dt>
+                <dd class="col-sm-10">@Model.Assets.First().Name</dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Threats!.First().Name)
+                </dt>
+                <dd class="col-sm-10">@Model.Threats.First().Name</dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.AverageRiskPerAssetThreats!.First().AverageRisk)
+                </dt>
+                <dd class="col-sm-10">@Model.AverageRiskPerAssetThreats!.First().AverageRisk</dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.AverageRiskPerAssetThreats!.First().RiskRatingQualitative)
+                </dt>
+                <dd class="col-sm-10">@Model.AverageRiskPerAssetThreats!.First().RiskRatingQualitative</dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.AverageRiskPerAssetThreats!.First().AssessmentDate)
+                </dt>
+                <dd class="col-sm-10">@Model.AverageRiskPerAssetThreats!.First().AssessmentDate</dd>
+            </dl>
+        }
+        else
+        {
+            <p>Дані не доступні.</p>
+        }
+        <a asp-action="Index" class="btn btn-sm btn-success">Назад до списку оцінок ризику</a>
+    </div>
+</div>

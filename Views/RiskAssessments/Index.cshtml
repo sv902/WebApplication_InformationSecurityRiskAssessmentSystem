@@ -1,0 +1,108 @@
+﻿@model WebApplication_InformationSecurityRiskAssessmentSystem.ViewModels.RiskAssessmentViewModel
+
+@{
+    ViewData["Title"] = "Оцінювання ризику";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    <p>
+        <button class="btn btn-lg btn-primary custom-btn btn-2" id="calculateRisksBtn">Оцінити ризики</button>
+        <a asp-action="Report" class="btn btn-lg btn-secondary custom-btn btn-2">Перейти до звіту</a>
+    </p>
+
+    <div class="table-responsive" id="results">
+        <table class="table table-striped table-bordered" id="resultsTable" border="1">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th>@Html.DisplayNameFor(model => model.Assets!.First().Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Threats!.First().Name)</th>                        
+                    <th>@Html.DisplayNameFor(model => model.AverageRiskPerAssetThreats!.First().AverageRisk)</th>
+                    <th>@Html.DisplayNameFor(model => model.AverageRiskPerAssetThreats!.First().RiskRatingQualitative)</th>
+                    <th>@Html.DisplayNameFor(model => model.AverageRiskPerAssetThreats!.First().AssessmentDate)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int rowIndex = (Model.Paginator!.PageNumber - 1) * Model.Paginator.PageSize + 1;
+                }
+                @foreach (var item in Model.AverageRiskPerAssetThreats!)
+                {
+                    var avgRiskPerAssetThreat = Model.AverageRiskPerAssetThreats!
+                    .FirstOrDefault(ar => ar.AssetId == item.AssetId && ar.ThreatId == item.ThreatId)?.AverageRisk ?? 0;
+
+                    <tr>
+                        <td>@rowIndex</td>
+                        <td>@Html.DisplayFor(modelItem => item.Asset!.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Threat!.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.AverageRisk)</td> 
+                        <td>@Html.DisplayFor(modelItem => item.RiskRatingQualitative)</td>
+                        <td>@Html.DisplayFor(modelItem => item.AssessmentDate)</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-success">Деталі</a> |
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger">Видалити</button>
+                            </form>
+                        </td>
+                    </tr>
+                    rowIndex++;
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <!-- Пагінація -->
+    <div>
+        @if (Model.Paginator.TotalPages > 1)
+        {
+            <ul class="pagination">
+                @if (Model.Paginator.PageNumber > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.Paginator.PageNumber - 1)">Попередня</a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.Paginator.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.Paginator.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
+                @if (Model.Paginator.PageNumber < Model.Paginator.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.Paginator.PageNumber + 1)">Наступна</a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#calculateRisksBtn').click(function () {
+                $.ajax({
+                    url: '@Url.Action("CalculateRisks", "RiskAssessments")',
+                    type: 'POST',
+                    success: function (result) {
+                        // Оновлюємо таблицю з новими даними
+                        $('#results').html(result);
+                    },
+                    error: function (error) {
+                        console.log("Error calculating risks: ", error);
+                        alert("Error calculating risks: " + error.responseJSON.error + "\nStack Trace: " + error.responseJSON.stackTrace);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+

@@ -1,0 +1,97 @@
+﻿@model WebApplication_InformationSecurityRiskAssessmentSystem.Models.Contact
+
+@{
+    ViewData["Title"] = "Деталі про користувача";
+}
+
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+    <div>
+        <h4>Користувач @Model.Name</h4>
+
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Message)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateAdded)
+                <!-- Кнопка з іконкою знаку питання -->
+                <button id="openModalBtn" class="btn-icon rounded-circle">
+                    <i class="fas fa-question"></i>
+                </button>
+
+                <!-- Модальне вікно -->
+                <div id="myModal" class="modal">
+                    <!-- Контент модального вікна -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <p>Це година за київським часом, коли користувач подав звернення.</p>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+
+
+
+        <a asp-action="AdmContacts" class="btn btn-sm btn-success">Назад до списку користувачів</a>
+    </div>
+</div>
+
+<!-- JavaScript для модального вікна -->
+<script>
+    // Отримуємо модальне вікно
+    var modal = document.getElementById("myModal");
+
+    // Отримуємо кнопку, яка відкриває модальне вікно
+    var btn = document.getElementById("openModalBtn");
+
+    // Отримуємо елемент <span>, який закриває модальне вікно
+    var span = document.getElementsByClassName("close")[0];
+
+    // Коли користувач натискає на кнопку, відкривається модальне вікно
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // Коли користувач натискає на <span> (x), закривається модальне вікно
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // Коли користувач натискає за межі модального вікна, воно також закривається
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>

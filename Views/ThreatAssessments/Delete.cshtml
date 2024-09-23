@@ -1,0 +1,62 @@
+﻿@model WebApplication_InformationSecurityRiskAssessmentSystem.Models.ThreatAssessment
+
+@{
+    ViewData["Title"] = "Видалити оцінку";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="my-container">
+
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    <h3>Ви справді бажаєте вилучити оцінку для загрози "@Html.DisplayFor(model => model.Threat!.Name)"?</h3>
+    <div>
+        <h4>Оцінка загрози</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Asset!.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Asset!.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Threat!.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Threat!.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Likelihood)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Likelihood)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Consequences)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Consequences)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AssessmentDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AssessmentDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User!.FirstName) @Html.DisplayFor(model => model.User!.LastName)
+            </dd>            
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Видалити" class="btn btn-sm btn-danger" />  |
+            <a asp-action="Index" class="btn btn-sm btn-success">Назад до списку оцінок</a>
+        </form>
+    </div>
+
+</div>

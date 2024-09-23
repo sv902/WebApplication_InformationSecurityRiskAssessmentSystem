@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Головна";
+}
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<div class="text-center">
+    <h1 class="display-1 my-header-title">СИСТЕМА ОЦІНЮВАННЯ РИЗИКІВ ІНФОРМАЦІЙНОЇ БЕЗПЕКИ</h1>
+     <ul class="navbar-nav justify-content-center">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <p>Для виходу з системи натиснить кнопку вихід</p>
+            <li class="nav-item">
+                <a class="btn btn-lg btn-primary mx-2 custom-btn btn-2" asp-area="Identity" asp-page="/Account/Manage/Index">Профіль</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="btn btn-lg btn-primary mx-2 custom-btn btn-2">Вихід</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <p>Для початку роботи зараєструйтеся або увійдіть до системи</p>
+           
+            <li class="nav-item">
+                <a class="btn btn-lg btn-primary mx-2 custom-btn btn-2" asp-area="Identity" asp-page="/Account/Register">Реєстрація</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-lg btn-primary mx-2 custom-btn btn-2" asp-area="Identity" asp-page="/Account/Login">Вхід</a>
+            </li>                     
+        }
+    </ul>
+</div>
+

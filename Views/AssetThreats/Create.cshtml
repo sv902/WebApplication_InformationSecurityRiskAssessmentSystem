@@ -1,0 +1,80 @@
+﻿@model WebApplication_InformationSecurityRiskAssessmentSystem.Models.AssetThreat
+
+@{
+    ViewData["Title"] = "Визначення загроз для активів";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    <h4>Ідентифікація загроз для активів</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="AssetId" class="control-label"></label>
+                    <select asp-for="AssetId" class="form-control" id="assetSelect">
+                        <option value="">-- Виберіть актив --</option>
+                        @foreach (var asset in ViewBag.AssetId as IEnumerable<SelectListItem>)
+                        {
+                            <option value="@asset.Value">@asset.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="AssetId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ThreatId" class="control-label"></label>
+                    <select asp-for="ThreatId" class="form-control" id="threatSelect">
+                        <option value="">--Оберыть загрозу--</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Додати" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div>
+        <a asp-action="Index" class="btn btn-sm btn-success">Назад до моделі загроз</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#assetSelect').change(function () {
+                var assetId = $(this).val();
+                if (assetId) {
+                    $.ajax({
+                        url: '@Url.Action("GetAvailableThreats", "AssetThreats")',
+                        data: { assetId: assetId },
+                        dataType: 'json',
+                        success: function (data) {
+                            var threatSelect = $('#threatSelect');
+                            threatSelect.empty();
+                            threatSelect.append('<option value="">--Оберыть загрозу--</option>');
+                            $.each(data, function (index, item) {
+                                threatSelect.append('<option value="' + item.value + '">' + item.text + '</option>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching threats:', error);
+                        }
+                    });
+                } else {
+                    $('#threatSelect').empty().append('<option value="">--Оберыть загрозу--</option>');
+                }
+            });
+        });
+    </script>
+}

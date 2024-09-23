@@ -1,0 +1,37 @@
+﻿@model WebApplication_InformationSecurityRiskAssessmentSystem.Models.AssetThreat
+
+@{
+    ViewData["Title"] = "Видалити зв'язок актив-загроза";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    <h3>Ви справді бажаєте вилучити цей зв'язок?</h3>
+    <div>
+        <h4>Актив-загроза</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Актив
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Asset.Name)
+            </dd>
+            <dt class="col-sm-2">
+                Загроза
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Threat.Name)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Видалити" class="btn btn-sm btn-danger" /> |
+            <a asp-action="Index" class="btn btn-sm btn-success">Назад до моделі загроз</a>
+        </form>
+    </div>
+</div>
+

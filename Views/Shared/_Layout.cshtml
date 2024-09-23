@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="uk-UA" class="h-100" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Система оцінювання ризиків інформаційної безпеки</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication_InformationSecurityRiskAssessmentSystem.styles.css" asp-append-version="true" />
+    <!---------------->
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/cover/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+       
+    <!-- Favicons -->
+    <link rel="icon" href="~/favicon.png">
+    <meta name="theme-color" content="#712cf9">
+
+</head>
+
+<body class="d-flex flex-column">
+    <header @* class="mb-auto" *@>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color: white;">ISRAS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon" style="color: white;"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Головна</a>
+                        </li>
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Assets" asp-action="Index">Активи</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Threats" asp-action="Index">Загрози</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="AssetThreats" asp-action="Index">Модель загроз</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ThreatAssessments" asp-action="Index">Оцінювання загроз</a>
+                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="RiskAssessments" asp-action="Index">Оцінювання ризику</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Contacts" asp-action="AdmContacts">Звернення</a>
+                                </li>
+                            }                           
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Приватність</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">Про нас</a>
+                        </li>
+                        @if (User.IsInRole("Expert"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Contacts" asp-action="Add">Контакти</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+ </header>
+
+ <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+</div>
+
+ @*    <footer class="text-center text-body-secondary bg-body-tertiary">
+        <div class="container text-light">
+            &copy; 2024 - Information Security Risk Assessment System - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="btn-close-white">Приватність</a>
+        </div>
+</footer>  *@
+
+
+    <footer class="py-3 border-top">
+        <div class="container ">
+            <p class="text-body-secondary mb-0">&copy; 2024 - Information Security Risk Assessment System - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="btn-close-white">Приватність</a></p>
+        </div>
+ </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>   
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

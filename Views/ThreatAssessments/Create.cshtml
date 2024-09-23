@@ -1,0 +1,93 @@
+﻿@using WebApplication_InformationSecurityRiskAssessmentSystem.Models
+
+@model WebApplication_InformationSecurityRiskAssessmentSystem.Models.ThreatAssessment
+
+@{
+    ViewData["Title"] = "Створити оцінку загроз";
+}
+
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    <h4>Оцінка загрози актива</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label asp-for="AssetId" class="control-label" for="AssetId"></label>
+                    <select asp-for="AssetId" class="form-control" asp-items="ViewBag.AssetId" id="AssetId">
+                        <option value="">-- Виберіть актив --</option>
+                    </select>
+                    <span asp-validation-for="AssetId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ThreatId" class="control-label" for="ThreatId"></label>
+                    <select asp-for="ThreatId" class="form-control" asp-items="ViewBag.ThreatId" id="ThreatId">
+                        <option value="">--Обери загрозу--</option>
+                    </select>
+                    <span asp-validation-for="ThreatId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Likelihood" class="control-label" for="Likelihood"></label>
+                    <input asp-for="Likelihood" type="number" class="form-control" step="any" id="Likelihood" />
+                    <span asp-validation-for="Likelihood" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Consequences" class="control-label" for="Consequences"></label>
+                    <input asp-for="Consequences" type="number" class="form-control" step="any" id="Consequences" />
+                    <span asp-validation-for="Consequences" class="text-danger"></span>
+                </div>
+
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Оцінити" class="btn btn-lg btn-primary custom-btn btn-2" />
+                </div>
+            </form>
+        </div>
+    </div> 
+    <br />
+    <div>
+        <a asp-action="Index" class="btn btn-sm btn-success">Назад до списку оцінок</a>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#AssetId').change(function () {
+                var assetId = $(this).val();
+                if (assetId) {
+                    $.getJSON('@Url.Action("GetAvailableThreatsJson", "ThreatAssessments")', { assetId: assetId }, function (data) {
+                        var threatSelect = $('#ThreatId');
+                        threatSelect.empty(); // Очищаємо всі попередні елементи
+
+                        // Перевірка, чи є доступні загрози
+                        if (data.length > 0) {
+                            $.each(data, function (i, threat) {
+                                threatSelect.append($('<option>', {
+                                    value: threat.value,
+                                    text: threat.text
+                                }));
+                            });
+                        } else {
+                            threatSelect.append($('<option>', {
+                                value: '',
+                                text: '-- Загрози відсутні --'
+                            }));
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+}

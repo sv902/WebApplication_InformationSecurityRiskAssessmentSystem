@@ -1,0 +1,43 @@
+﻿@model WebApplication_InformationSecurityRiskAssessmentSystem.Models.Contact
+
+@{
+    ViewData["Title"] = "Видалення повідомлення";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    <h3>Ви справді бажаєте вилучити повідомлення від @Model.Name ?</h3>
+    <div>
+        <h4>Звернення</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+        </dl>
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Видалити" class="btn btn-sm btn-danger" /> |
+        <a asp-action="AdmContacts" class="btn btn-sm btn-success">Назад до моделі загроз</a>
+    </form>
+</div>
+
+
+

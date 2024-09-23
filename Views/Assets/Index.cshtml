@@ -1,0 +1,97 @@
+﻿@model WebApplication_InformationSecurityRiskAssessmentSystem.ViewModels.AssetPageViewModel
+
+@{
+    ViewData["Title"] = "Активи";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="my-container">
+    <h1 class="my-header">@ViewData["Title"]</h1>
+
+    @if (User.IsInRole("Admin"))
+      {  <p>
+            <a asp-action="Create" class="btn btn-primary custom-btn btn-2">Додати актив</a>
+        </p>
+      }
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Assets!.First().Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Assets!.First().Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Assets!.First().Owner)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int rowIndex = (Model.Paginator!.PageNumber - 1) * Model.Paginator.PageSize + 1;
+                }
+                @foreach (var item in Model.Assets!)
+                {
+                    <tr>
+                        <td>@rowIndex</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Owner)
+                        </td>
+                     
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-success">Деталі</a> 
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <span|></span|>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Редагування</a> 
+                                <span|></span|>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Видалення</a>
+	                        }
+                        </td>
+                    </tr>
+                    rowIndex++;
+                }
+            </tbody>
+        </table>
+    </div>
+   <br />
+    <!-- Пагінація -->
+    <div>
+        @if (Model.Paginator.TotalPages > 1)
+        {
+            <ul class="pagination">
+                @if (Model.Paginator.PageNumber > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.Paginator.PageNumber - 1)">Попередня</a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.Paginator.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.Paginator.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
+                @if (Model.Paginator.PageNumber < Model.Paginator.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.Paginator.PageNumber + 1)">Наступна</a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+
+
+</div>
+
