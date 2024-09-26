@@ -45,6 +45,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="ThreatAssessments" asp-action="Index">Оцінювання загроз</a>
                             </li>
+                  
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
@@ -53,20 +54,26 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Contacts" asp-action="AdmContacts">Звернення</a>
                                 </li>
-                            }                           
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Role" asp-action="Index">Ролі</a>
+                                </li>
+                                
+                                
+                            }
+                            @if (User.IsInRole("Expert"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Contacts" asp-action="Add">Контакти</a>
+                                </li>
+                            }
                         }
-                        <li class="nav-item">
+                            <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Приватність</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">Про нас</a>
                         </li>
-                        @if (User.IsInRole("Expert"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Contacts" asp-action="Add">Контакти</a>
-                            </li>
-                        }
+                       
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

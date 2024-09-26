@@ -1,0 +1,47 @@
+﻿@model IEnumerable<UserRolesViewModel>
+<div class="my-container">
+<h2>Управління ролями</h2>
+
+    <table class="table">
+    <tr>
+        <th>Ім'я користувача</th>
+        <th>Пошта користувача</th>
+        <th>Ролі</th>
+        <th>Дії</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.UserName</td>
+            <td>
+                @foreach (var role in user.Roles)
+                {
+                    @role <br />
+                }
+            </td>
+            <td>
+                
+                @if (user.Roles.Contains("Admin"))
+                {
+                    <form asp-action="RemoveAdmin" method="post">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                            <button class="btn btn-warning mb-2"  type="submit">Зняти роль адміністратора</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="MakeAdmin" method="post">
+                            <input type="hidden" name="userId" value="@user.UserId" />
+                            <button class="btn btn-success mb-2"  type="submit">Зробити адміністратором</button>
+                    </form>
+                }
+                    <form asp-action="DeleteUser" method="post">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <button class="btn btn-danger" type="submit">Видалити</button>
+                    </form>
+            </td>
+        </tr>
+    }
+</table>
+</div>

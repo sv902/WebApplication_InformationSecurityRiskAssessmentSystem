@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using WebApplication_InformationSecurityRiskAssessmentSystem.Data;
 using WebApplication_InformationSecurityRiskAssessmentSystem.Models;
 
@@ -38,11 +39,27 @@ namespace WebApplication_InformationSecurityRiskAssessmentSystem.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            var contact = new Contact();
+
+            if (User.Identity.IsAuthenticated)
+            {
+
+                
+                // Автоматично заповнюємо поле Email
+                var emailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                if (emailClaim != null)
+                {
+                    contact.Email = emailClaim.Value;  
+                }
+                
+            }
 
             ViewBag.Action = "Add";
-            return View("Add", new Contact());
+            return View("Add", contact);
         }
-        [Authorize(Roles = "Expert")]
+
+
+        [Authorize(Roles = "Expert, Users")]
 
         [HttpPost]
         public IActionResult Add(Contact contact)
